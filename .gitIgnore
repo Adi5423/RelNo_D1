@@ -10,3 +10,5 @@ obj
 *.cache
 *.pdb
 install
+CMakeCache.txt
+CMakeFiles/

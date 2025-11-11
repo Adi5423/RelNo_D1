@@ -115,6 +115,25 @@ This will place:
 
 ---
 
+## Use in your Project
+Via Cmake :
+```cmake
+find_package(RelNo_D1 REQUIRED)
+target_link_libraries(MyApp PRIVATE RelNo_D1::WhiteNoise)
+```
+
+---
+
+## ⚙️ Parameters Explained
+
+| Function              | Description                  | Output Range    | Key Parameters                                     |
+| --------------------- | ------------------------------ | ------------- | ----------------------------------------------------- |
+| `create_whitenoise()`   | Random uniform 2D noise | `[0,1]` | width, height, seed |
+| `create_perlinnoise()`  | Smooth gradient-based noise | `[0,1]` | scale, octaves, frequency, persistence, lacunarity, base, seed |
+| `create_simplexnoise()` | Faster, artifact-free version of Perlin| `[-1,1]` | scale, octaves, persistence, lacunarity, base, seed |
+
+---
+
 ## Quick example
 
 `examples/main.cpp` demonstrates usage:
