@@ -19,7 +19,7 @@ namespace std {
 namespace Noise {
 
     // ---------------------------------------------------------
-    // Constructor — creates permutation table
+    // Constructor ï¿½ creates permutation table
     // ---------------------------------------------------------
     SimplexNoise::SimplexNoise(int seed) {
         perm.resize(512);
@@ -145,6 +145,10 @@ namespace Noise {
     // Save as grayscale PNG
     // ---------------------------------------------------------
     void save_simplex_image(const std::vector<std::vector<float>>& noise, const std::string& filename) {
+        if (noise.empty() || noise[0].empty()) {
+            throw std::invalid_argument("Cannot save empty noise map.");
+        }
+
         int height = noise.size();
         int width = noise[0].size();
 
@@ -157,12 +161,16 @@ namespace Noise {
         std::filesystem::create_directories(outputDir);
         std::filesystem::path outputFile = outputDir / filename;
 
-        stbi_write_png(outputFile.string().c_str(), width, height, 1, img.data(), width);
+        int result = stbi_write_png(outputFile.string().c_str(), width, height, 1, img.data(), width);
+        if (result == 0) {
+            throw std::runtime_error("Failed to write image file: " + outputFile.string());
+        }
+
         std::cout << "[OK] Simplex noise image saved at: " << outputFile.string() << "\n";
     }
 
     // ---------------------------------------------------------
-    // Wrapper — same API pattern as others
+    // Wrapper ï¿½ same API pattern as others
     // ---------------------------------------------------------
     std::vector<std::vector<float>> create_simplexnoise(
         int width,

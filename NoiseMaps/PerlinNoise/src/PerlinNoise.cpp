@@ -111,25 +111,11 @@ namespace Noise {
             freq *= lacunarity;
         }
 
-        // Normalize to [0,1]
+        // Normalize to [0,1] - consistent with SimplexNoise approach
+        // Perlin noise() already returns [0,1], so just divide by max amplitude
         for (int y = 0; y < height; ++y)
             for (int x = 0; x < width; ++x)
                 noise[y][x] /= maxAmplitude;
-
-        // Optional clamp
-        float minVal = 1.0f, maxVal = 0.0f;
-        for (auto& row : noise)
-            for (auto v : row) {
-                if (v < minVal) minVal = v;
-                if (v > maxVal) maxVal = v;
-            }
-
-        float range = maxVal - minVal;
-        if (range > 0.0f) {
-            for (auto& row : noise)
-                for (auto& v : row)
-                    v = (v - minVal) / range;
-        }
 
         return noise;
     }
@@ -138,6 +124,10 @@ namespace Noise {
     // Save Perlin map to grayscale PNG
     // ---------------------------------------------------------
     void save_perlin_image(const std::vector<std::vector<float>>& noise, const std::string& filename) {
+        if (noise.empty() || noise[0].empty()) {
+            throw std::invalid_argument("Cannot save empty noise map.");
+        }
+
         int height = noise.size();
         int width = noise[0].size();
 
@@ -150,7 +140,11 @@ namespace Noise {
         std::filesystem::create_directories(outputDir);
         std::filesystem::path outFile = outputDir / filename;
 
-        stbi_write_png(outFile.string().c_str(), width, height, 1, imgData.data(), width);
+        int result = stbi_write_png(outFile.string().c_str(), width, height, 1, imgData.data(), width);
+        if (result == 0) {
+            throw std::runtime_error("Failed to write image file: " + outFile.string());
+        }
+
         std::cout << "[OK] Perlin noise image saved at: " << outFile.string() << "\n";
     }
 

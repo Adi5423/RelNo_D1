@@ -53,6 +53,10 @@ namespace Noise {
     // Save as grayscale PNG (0–255)
     // -------------------------------------------------------------
     void WhiteNoise::save(const std::vector<std::vector<float>>& noise, const std::string& filename) {
+        if (noise.empty() || noise[0].empty()) {
+            throw std::invalid_argument("Cannot save empty noise map.");
+        }
+
         int height = noise.size();
         int width = noise[0].size();
 
@@ -68,7 +72,11 @@ namespace Noise {
 
         // Save file there
         std::filesystem::path outputFile = outputDir / filename;
-        stbi_write_png(outputFile.string().c_str(), width, height, 1, imgData.data(), width);
+        int result = stbi_write_png(outputFile.string().c_str(), width, height, 1, imgData.data(), width);
+
+        if (result == 0) {
+            throw std::runtime_error("Failed to write image file: " + outputFile.string());
+        }
 
         std::cout << "[OK] White noise image saved at: " << outputFile.string() << "\n";
     }
