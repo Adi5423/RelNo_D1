@@ -108,10 +108,19 @@ namespace Noise {
         float base,
         int seed
     ) {
+        // Validate parameters
+        if (width <= 0)
+            throw std::invalid_argument("width must be > 0, got: " + std::to_string(width));
+        if (height <= 0)
+            throw std::invalid_argument("height must be > 0, got: " + std::to_string(height));
         if (scale <= 0.0f)
-            throw std::invalid_argument("scale must be > 0");
+            throw std::invalid_argument("scale must be > 0, got: " + std::to_string(scale));
         if (octaves < 1)
-            throw std::invalid_argument("octaves must be >= 1");
+            throw std::invalid_argument("octaves must be >= 1, got: " + std::to_string(octaves));
+        if (persistence < 0.0f || persistence > 1.0f)
+            throw std::invalid_argument("persistence must be in [0,1], got: " + std::to_string(persistence));
+        if (lacunarity <= 0.0f)
+            throw std::invalid_argument("lacunarity must be > 0, got: " + std::to_string(lacunarity));
 
         SimplexNoise noiseGen(seed);
         std::vector<std::vector<float>> noise(height, std::vector<float>(width, 0.0f));

@@ -11,8 +11,12 @@ namespace Noise {
     // Generate white noise: returns a 2D vector of floats [0,1]
     // -------------------------------------------------------------
     std::vector<std::vector<float>> WhiteNoise::generate(int width, int height, int seed) {
-        if (width <= 0 || height <= 0) {
-            throw std::invalid_argument("Width and height must be positive.");
+        // Validate parameters
+        if (width <= 0) {
+            throw std::invalid_argument("width must be > 0, got: " + std::to_string(width));
+        }
+        if (height <= 0) {
+            throw std::invalid_argument("height must be > 0, got: " + std::to_string(height));
         }
 
         std::vector<std::vector<float>> noise(height, std::vector<float>(width));
