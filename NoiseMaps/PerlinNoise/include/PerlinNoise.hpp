@@ -28,6 +28,19 @@ namespace Noise {
         float noise(float x, float y) const;
     };
 
+    // Single-value sampling API: Sample noise at specific coordinates without generating full map
+    float sample_perlin(
+        float x,
+        float y,
+        float scale,
+        int octaves,
+        float frequency,
+        float persistence,
+        float lacunarity,
+        float base = 0.0f,
+        int seed = -1
+    );
+
     std::vector<std::vector<float>> generate_perlin_map(
         int width,
         int height,

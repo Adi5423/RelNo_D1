@@ -23,6 +23,11 @@ if (BUILD_EXAMPLES)
     add_executable(RelNoD_NoiseExample examples/main.cpp)
     target_link_libraries(RelNoD_NoiseExample PRIVATE WhiteNoise PerlinNoise SimplexNoise)
     target_compile_definitions(RelNoD_NoiseExample PRIVATE "RelNo_D1_EXAMPLE")
+    
+    # Sampling API test
+    add_executable(RelNoD_SamplingTest examples/test_sampling.cpp)
+    target_link_libraries(RelNoD_SamplingTest PRIVATE WhiteNoise PerlinNoise SimplexNoise)
+    target_compile_definitions(RelNoD_SamplingTest PRIVATE "RelNo_D1_SAMPLING_TEST")
 endif()
 
 # Installation setup — works on all platforms & paths

@@ -73,6 +73,53 @@ namespace Noise {
     }
 
     // ---------------------------------------------------------
+    // Single-value sampling: Sample Perlin noise at specific coordinates
+    // ---------------------------------------------------------
+    float sample_perlin(
+        float x,
+        float y,
+        float scale,
+        int octaves,
+        float frequency,
+        float persistence,
+        float lacunarity,
+        float base,
+        int seed
+    ) {
+        // Validate parameters
+        if (scale <= 0.0f)
+            throw std::invalid_argument("scale must be > 0, got: " + std::to_string(scale));
+        if (octaves < 1)
+            throw std::invalid_argument("octaves must be >= 1, got: " + std::to_string(octaves));
+        if (frequency <= 0.0f)
+            throw std::invalid_argument("frequency must be > 0, got: " + std::to_string(frequency));
+        if (persistence < 0.0f || persistence > 1.0f)
+            throw std::invalid_argument("persistence must be in [0,1], got: " + std::to_string(persistence));
+        if (lacunarity <= 0.0f)
+            throw std::invalid_argument("lacunarity must be > 0, got: " + std::to_string(lacunarity));
+
+        PerlinNoise generator(seed);
+        
+        float value = 0.0f;
+        float amplitude = 1.0f;
+        float maxAmplitude = 0.0f;
+        float freq = frequency;
+
+        for (int o = 0; o < octaves; ++o) {
+            float nx = (x + base) / scale * freq;
+            float ny = (y + base) / scale * freq;
+            value += generator.noise(nx, ny) * amplitude;
+            
+            maxAmplitude += amplitude;
+            amplitude *= persistence;
+            freq *= lacunarity;
+        }
+
+        // Normalize to [0,1]
+        return value / maxAmplitude;
+    }
+
+    // ---------------------------------------------------------
     // Multi-octave map generator
     // ---------------------------------------------------------
     std::vector<std::vector<float>> generate_perlin_map(

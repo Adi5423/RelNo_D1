@@ -97,6 +97,50 @@ namespace Noise {
     }
 
     // ---------------------------------------------------------
+    // Single-value sampling: Sample Simplex noise at specific coordinates
+    // ---------------------------------------------------------
+    float sample_simplex(
+        float x,
+        float y,
+        float scale,
+        int octaves,
+        float persistence,
+        float lacunarity,
+        float base,
+        int seed
+    ) {
+        // Validate parameters
+        if (scale <= 0.0f)
+            throw std::invalid_argument("scale must be > 0, got: " + std::to_string(scale));
+        if (octaves < 1)
+            throw std::invalid_argument("octaves must be >= 1, got: " + std::to_string(octaves));
+        if (persistence < 0.0f || persistence > 1.0f)
+            throw std::invalid_argument("persistence must be in [0,1], got: " + std::to_string(persistence));
+        if (lacunarity <= 0.0f)
+            throw std::invalid_argument("lacunarity must be > 0, got: " + std::to_string(lacunarity));
+
+        SimplexNoise noiseGen(seed);
+        
+        float value = 0.0f;
+        float amplitude = 1.0f;
+        float maxAmp = 0.0f;
+        float frequency = 1.0f;
+
+        for (int o = 0; o < octaves; ++o) {
+            float nx = (x + base) / scale * frequency;
+            float ny = (y + base) / scale * frequency;
+            value += noiseGen.noise2D(nx, ny) * amplitude;
+            
+            maxAmp += amplitude;
+            amplitude *= persistence;
+            frequency *= lacunarity;
+        }
+
+        // Normalize to [0,1]
+        return (value / maxAmp) * 0.5f + 0.5f;
+    }
+
+    // ---------------------------------------------------------
     // Multi-octave Simplex map generator
     // ---------------------------------------------------------
     std::vector<std::vector<float>> generate_simplex_map(
