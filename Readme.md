@@ -52,7 +52,7 @@ Designed to be modular, easy to include and extend. The library provides single-
 - [API reference](#api-reference)
 - [Detailed function reference &amp; calculations](#detailed-function-reference--calculations)
 - [Math &amp; Implementation notes](#math--implementation-notes)
-- [Project layout](#project-layout)
+- [Project Summary](#project-summary)
 - [Contributing](#contributing)
 - [License](#license)
 
