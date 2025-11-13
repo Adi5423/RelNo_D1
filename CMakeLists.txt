@@ -38,10 +38,15 @@ if (BUILD_EXAMPLES)
     add_executable(RelNoD_ChunkTest examples/test_chunks.cpp)
     target_link_libraries(RelNoD_ChunkTest PRIVATE WhiteNoise PerlinNoise SimplexNoise TerrainNoise)
     target_compile_definitions(RelNoD_ChunkTest PRIVATE "RelNo_D1_CHUNK_TEST")
+    
+    # Cave generation test
+    add_executable(RelNoD_CaveTest examples/test_caves.cpp)
+    target_link_libraries(RelNoD_CaveTest PRIVATE CaveNoise PerlinNoise)
+    target_compile_definitions(RelNoD_CaveTest PRIVATE "RelNo_D1_CAVE_TEST")
 endif()
 
 # Installation setup — works on all platforms & paths
-install(TARGETS WhiteNoise PerlinNoise SimplexNoise TerrainNoise
+install(TARGETS WhiteNoise PerlinNoise SimplexNoise TerrainNoise CaveNoise
     EXPORT PackageNoiseTargets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
@@ -53,4 +58,5 @@ install(DIRECTORY NoiseMaps/WhiteNoise/include/ DESTINATION include/Noise/WhiteN
 install(DIRECTORY NoiseMaps/PerlinNoise/include/ DESTINATION include/Noise/PerlinNoise)
 install(DIRECTORY NoiseMaps/SimplexNoise/include/ DESTINATION include/Noise/SimplexNoise)
 install(DIRECTORY NoiseMaps/TerrainNoise/include/ DESTINATION include/Noise/TerrainNoise)
+install(DIRECTORY NoiseMaps/CaveNoise/include/ DESTINATION include/Noise/CaveNoise)
 install(FILES Noise.hpp DESTINATION include/Noise)
