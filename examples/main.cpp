@@ -63,6 +63,6 @@ int main() {
         OutputMode::Image,
         "pink_noise.png"
     );
-
+    
     return 0;
 }

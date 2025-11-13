@@ -1,47 +1,67 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Noise.hpp" // for OutputMode (gives full enum definition)
+#include <cstddef>
+#include "Noise.hpp"
 
 namespace Noise {
 
-    enum class OutputMode;
+    enum class OutputMode; // forward declare (Noise.hpp provides def when included in compilation units)
 
-    // PinkNoise generator using multi-octave block-filtered white noise
+    // aligned buffer RAII wrapper (opaque here, defined in cpp)
+    struct AlignedBuffer {
+        float* data = nullptr;
+        std::size_t size = 0; // number of floats
+        AlignedBuffer() = default;
+        AlignedBuffer(std::size_t n);
+        ~AlignedBuffer();
+        AlignedBuffer(const AlignedBuffer&) = delete;
+        AlignedBuffer& operator=(const AlignedBuffer&) = delete;
+        AlignedBuffer(AlignedBuffer&& other) noexcept;
+        AlignedBuffer& operator=(AlignedBuffer&& other) noexcept;
+        float* get() noexcept { return data; }
+    };
+
+    // PinkNoise generator class (lightweight)
     class PinkNoise {
     public:
         explicit PinkNoise(int seed = -1);
+        ~PinkNoise() = default;
 
-        // Generate a block-averaged white noise layer (0 to 1)
-        std::vector<std::vector<float>> make_blurred_white(
-            int width,
-            int height,
-            int blockSize
-        ) const;
+        // low-level method: build single layer white noise into target (contiguously)
+        // width*height sized target
+        void generate_white_layer(float* target, int width, int height, int octaveSeed) const;
+
+        // build integral image (summed-area table) from `src` (size w*h) into `dst` (size (w+1)*(h+1))
+        // `dst` layout: (h+1) rows of (w+1) floats; row major
+        static void build_integral(const float* src, float* dst, int width, int height);
+
+        // compute box-averages using integral image and write into `out` (contiguous w*h)
+        // box defined by integer blockSize (block width/height)
+        // top-left anchored boxes — consistent with previous implementation (blocks starting at multiples)
+        static void box_average_from_integral(const float* integral, float* out, int width, int height, int blockSize);
 
     private:
         int seed_;
     };
 
-    // Multi-octave Pink noise map generator (approx. 1/f^alpha)
+    // High-level generator
     std::vector<std::vector<float>> generate_pink_map(
         int width,
         int height,
         int octaves = 6,
-        float alpha = 1.0f,          // 1 = pink, 2 = brown/red, <1 = blue-ish
-        int sampleRate = 44100,      // used to scale octave spacing
-        float amplitude = 1.0f,      // output scaling
+        float alpha = 1.0f,
+        int sampleRate = 44100,
+        float amplitude = 1.0f,
         int seed = -1
     );
 
-    // Save as PNG / JPEG
     void save_pink_image(
         const std::vector<std::vector<float>>& noise,
         const std::string& filename = "pink_noise.png",
         const std::string& outputDir = ""
     );
 
-    // Main wrapper
     std::vector<std::vector<float>> create_pinknoise(
         int width,
         int height,
