@@ -45,6 +45,13 @@ target_include_directories(CaveNoise PUBLIC
     ${CMAKE_SOURCE_DIR}/external
 )
 
+add_library(TilemapExport STATIC
+    TilemapExport/src/TilemapExport.cpp
+)
+target_include_directories(TilemapExport PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/TilemapExport/include
+)
+
 # Shared stb implementation (compiled once)
 add_library(STBImageWrite OBJECT ${CMAKE_SOURCE_DIR}/external/stb_impl.cpp)
 
