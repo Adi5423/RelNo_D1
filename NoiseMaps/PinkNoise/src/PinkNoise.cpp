@@ -13,6 +13,7 @@
 #include <atomic>
 #include <cassert>
 #include <cstring>
+#include <cstdint> // for std::uintptr_t
 
 #if defined(_MSC_VER)
 #include <malloc.h> // _aligned_malloc / _aligned_free
@@ -31,31 +32,61 @@ namespace Noise {
     // -----------------------------
     AlignedBuffer::AlignedBuffer(std::size_t n) : data(nullptr), size(n) {
         if (n == 0) return;
+
         std::size_t bytes = n * sizeof(float);
+
 #if defined(_MSC_VER)
+        // Windows (MSVC): use _aligned_malloc / _aligned_free
         data = static_cast<float*>(_aligned_malloc(bytes, 64));
-        if (!data) throw std::bad_alloc();
+        if (!data) {
+            throw std::bad_alloc();
+        }
 #else
-        void* ptr = nullptr;
-        int err = posix_memalign(&ptr, 64, bytes);
-        if (err || !ptr) throw std::bad_alloc();
-        data = static_cast<float*>(ptr);
+        // Portable manual alignment for all other compilers (MinGW, Linux, macOS, etc.)
+        const std::size_t alignment = 64;
+
+        // We allocate extra space to:
+        //  - guarantee we can align to `alignment`
+        //  - store the original pointer just before the aligned block
+        std::size_t total = bytes + alignment - 1 + sizeof(void*);
+        void* raw = std::malloc(total);
+        if (!raw) {
+            throw std::bad_alloc();
+        }
+
+        // Find an aligned address inside the allocated block
+        std::uintptr_t start = reinterpret_cast<std::uintptr_t>(raw) + sizeof(void*);
+        std::uintptr_t aligned = (start + alignment - 1) & ~(alignment - 1);
+        void* alignedPtr = reinterpret_cast<void*>(aligned);
+
+        // Store the original pointer immediately before the aligned block
+        reinterpret_cast<void**>(alignedPtr)[-1] = raw;
+
+        data = static_cast<float*>(alignedPtr);
 #endif
-        // zero-initialize (optional, helpful)
+
+        // zero initialize the usable bytes (not the padding)
         std::memset(data, 0, bytes);
     }
 
     AlignedBuffer::~AlignedBuffer() {
-        if (!data) return;
 #if defined(_MSC_VER)
-        _aligned_free(data);
+        if (data) {
+            _aligned_free(data);
+        }
 #else
-        free(data);
+        if (data) {
+            // Recover the original pointer we stashed just before `data`
+            void* raw = reinterpret_cast<void**>(data)[-1];
+            std::free(raw);
+        }
 #endif
+
         data = nullptr;
         size = 0;
     }
 
+    // Move constructor
     AlignedBuffer::AlignedBuffer(AlignedBuffer&& other) noexcept {
         data = other.data;
         size = other.size;
@@ -63,15 +94,21 @@ namespace Noise {
         other.size = 0;
     }
 
+    // Move assignment
     AlignedBuffer& AlignedBuffer::operator=(AlignedBuffer&& other) noexcept {
         if (this != &other) {
-            if (data) {
+            // Free existing buffer
 #if defined(_MSC_VER)
+            if (data) {
                 _aligned_free(data);
-#else
-                free(data);
-#endif
             }
+#else
+            if (data) {
+                void* raw = reinterpret_cast<void**>(data)[-1];
+                std::free(raw);
+            }
+#endif
+            // Steal ownership
             data = other.data;
             size = other.size;
             other.data = nullptr;
@@ -79,6 +116,7 @@ namespace Noise {
         }
         return *this;
     }
+
 
     // -----------------------------
     // PinkNoise methods
