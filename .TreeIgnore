@@ -1,0 +1,6 @@
+start::
+./.git
+./.vs
+./out
+./relno_d1/build
+:end
