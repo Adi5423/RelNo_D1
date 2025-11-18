@@ -18,7 +18,9 @@ add_library(WhiteNoise STATIC
 target_include_directories(WhiteNoise PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/WhiteNoise/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../external>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> 
     $<INSTALL_INTERFACE:include/Noise/WhiteNoise>
+    $<INSTALL_INTERFACE:include/Noise>
 )
 
 target_link_libraries(WhiteNoise PRIVATE STBImageWrite)
@@ -33,7 +35,9 @@ add_library(PerlinNoise STATIC
 target_include_directories(PerlinNoise PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/PerlinNoise/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../external>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> 
     $<INSTALL_INTERFACE:include/Noise/PerlinNoise>
+    $<INSTALL_INTERFACE:include/Noise>
 )
 
 target_link_libraries(PerlinNoise PRIVATE STBImageWrite)
@@ -48,7 +52,9 @@ add_library(SimplexNoise STATIC
 target_include_directories(SimplexNoise PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/SimplexNoise/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../external>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>   
     $<INSTALL_INTERFACE:include/Noise/SimplexNoise>
+    $<INSTALL_INTERFACE:include/Noise>
 )
 
 target_link_libraries(SimplexNoise PRIVATE STBImageWrite)
@@ -63,7 +69,9 @@ add_library(PinkNoise STATIC
 target_include_directories(PinkNoise PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/PinkNoise/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../external>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> 
     $<INSTALL_INTERFACE:include/Noise/PinkNoise>
+    $<INSTALL_INTERFACE:include/Noise>
 )
 
 target_link_libraries(PinkNoise PRIVATE STBImageWrite)
