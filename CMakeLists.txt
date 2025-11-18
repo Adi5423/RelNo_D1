@@ -73,7 +73,15 @@ install(FILES
 # ----------------------------------------------------------
 # Testing
 # ----------------------------------------------------------
+# ----------------------------------------------------------
+# Testing
+# ----------------------------------------------------------
 include(CTest)
+
 if (BUILD_TESTING AND BUILD_EXAMPLES)
-    add_test(NAME ExampleRuns COMMAND RelNoD_NoiseExample)
+    add_test(
+        NAME ExampleRuns
+        COMMAND $<TARGET_FILE:RelNoD_NoiseExample>
+    )
 endif()
+
