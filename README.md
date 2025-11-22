@@ -65,8 +65,8 @@ GameWindow/
 │   ├─ glfw/              # GLFW source
 │   ├─ glad/              # GLAD loader
 │   ├─ glm/               # GLM math library
-│   └─ stb/               # stb headers
-│   └─ relno_d1/          # relno_d1 headers
+│   ├─ stb/               # stb headers
+│   └─ relno_d1/          # RelativeNoiseDimension 1 headers
 │
 └─ build/ (generated)
 ```
