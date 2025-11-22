@@ -1,0 +1,43 @@
+
+# Visual Studio
+
+.vs/
+
+*.suo
+
+*.user
+
+*.ipch
+
+*.VC.db
+
+*.VC.opendb
+
+# Build folders
+
+/build/
+
+/out/
+
+/bin/
+
+/CMakeFiles/
+
+/CMakeCache.txt
+
+# Generated libs and at most vendor/build artifacts
+
+/vendor/**/build/
+
+/vendor/**/bin/
+
+/vendor/**/lib/
+
+/*.log
+
+# OS
+
+.DS_Store
+
+Thumbs.db
+
