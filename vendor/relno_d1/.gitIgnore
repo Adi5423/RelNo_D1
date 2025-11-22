@@ -1,0 +1,14 @@
+build
+.vs
+.git
+bin
+obj
+*.user
+*.suo
+*.log
+*.tmp
+*.cache
+*.pdb
+install
+CMakeCache.txt
+CMakeFiles/
