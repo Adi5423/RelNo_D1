@@ -1,4 +1,4 @@
-// src/sandbox_main.cpp
+// src/mainWindow.cpp
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
