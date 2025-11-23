@@ -1,7 +1,7 @@
 ﻿﻿﻿﻿<h1 align="center">` RelNo_D1 `</h1>
 <p align="center">
   <b>A modular C++ library for procedural noise maps generation</b><br/>
-  Create algorithmically beautiful <b>WhiteNoise</b>, <b>PerlinNoise</b>, and <b>SimplexNoise</b> maps with ease.<br/>
+  Create algorithmically beautiful <b>PinkNoise</b>, <b>WhiteNoise</b>, <b>PerlinNoise</b>, and <b>SimplexNoise</b> maps with ease.<br/>
   <i>Lightweight • Dependency-free • Open-source</i>
 </p>
 
@@ -39,6 +39,7 @@ RelNo_D1 — a small, dependency-light C++ library of 2D noise maps:
 - **WhiteNoise**
 - **PerlinNoise**
 - **SimplexNoise**
+- **PinkNoise**
 
 Designed to be modular, easy to include and extend. The library provides single-call functions (mirroring a Python-style API) and focuses on correctness, clarity and zero runtime dependencies (except a single header for image writing).
 
