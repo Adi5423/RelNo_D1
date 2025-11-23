@@ -27,7 +27,7 @@
 
 <div align="center">
   <img src="ImageOutput/simplexNoise.png" width="520" alt="RelNo_D1 Example Preview"/><br/>
-  <strong>✨ Procedural noise generation made simple — one function call away.</strong>
+  <strong> Procedural noise generation made simple — one function call away.</strong>
 </div>
 
 ---
@@ -57,7 +57,7 @@ Designed to be modular, easy to include and extend. The library provides single-
 
 ---
 
-# ⚡ What’s New in RelNo_D1 (Performance Update)
+# What’s New in RelNo_D1 (Performance Update)
 
 The latest version of **RelNo_D1** introduces a fully optimized backend for procedural noise generation, bringing **SIMD acceleration**, **parallel processing**, and **high‑efficiency memory layouts** to your noise maps.
 
@@ -387,7 +387,7 @@ A 2D vector `[height][width]` of normalized floats ∈ **[0,1]**.
 
 ---
 
-## 🔬 How PinkNoise Works (Simplified)
+## How PinkNoise Works (Simplified)
 
 Pink noise follows a 1/f energy distribution found in:
 
@@ -398,11 +398,11 @@ Pink noise follows a 1/f energy distribution found in:
 
 RelNo_D1 generates PinkNoise using a **high‑performance spectral method**:
 
-### 1️⃣ Generate white noise per octave
+### 1. Generate white noise per octave
 
 A fresh white‑noise layer is created per octave using seed + octave.
 
-### 2️⃣ Convert to a Summed Area Table (Integral Image)
+### 2. Convert to a Summed Area Table (Integral Image)
 
 This enables constant‑time box averages:
 
@@ -410,22 +410,22 @@ This enables constant‑time box averages:
 sum = I(y2,x2) - I(y1,x2) - I(y2,x1) + I(y1,x1)
 ```
 
-### 3️⃣ Apply octave‑scaled block blur
+### 3. Apply octave‑scaled block blur
 
 Larger octaves → larger sampled regions → lower frequency content.
 
-### 4️⃣ Thread‑parallel averaging
+### 4. Thread‑parallel averaging
 
 Each thread processes rows using an atomic counter.
 
-### 5️⃣ AVX2 vectorized accumulation
+### 5. AVX2 vectorized accumulation
 
 ```
 acc += avg * weight
 weight = 1 / (blockSize^alpha)
 ```
 
-### 6️⃣ Normalize & clamp
+### 6. Normalize & clamp
 
 ```
 pixel = clamp((acc / totalWeight) * amplitude, 0, 1)
@@ -447,7 +447,7 @@ Each map can be combined, remapped or visualized as textures, heightmaps, proced
 ---
 
 
-# 📦 Performance Summary
+# Performance Summary
 
 After optimization, PinkNoise generation is now:
 
@@ -467,7 +467,7 @@ This makes RelNo_D1 suitable for:
 
 ---
 
-## 💡 Philosophy of RelNo
+## Philosophy of RelNo
 
 RelNo aims to provide:
 
@@ -480,7 +480,7 @@ This update lays the groundwork for future 3D noise (D2) and 4D/temporal noise (
 
 ---
 
-### 👨‍💻 About the Developer
+### About the Developer
 
 **Aditya Tiwari**
 - 💼 LinkedIn: [Aditya Tiwari](https://www.linkedin.com/in/adii5423/)
