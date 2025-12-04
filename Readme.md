@@ -503,7 +503,7 @@ This update lays the groundwork for future 3D noise (D2) and 4D/temporal noise (
 - 💼 LinkedIn: [Aditya Tiwari](https://www.linkedin.com/in/adii5423/)
 - 🐱 GitHub: [GitHub Profile](https://github.com/adi5423)
 - 📧 Email: adii54ti23@gmail.com
-- 🐦 Twitter: [@Adii5423](https://twitter.com/Adii5423)
+- 🐦 Twitter: [@Adiii5423](https://twitter.com/Adiii5423)
 - 📧 Instagram: [@Adii5423.exe](https://instagram.com/Adii5423)
 
 ---
