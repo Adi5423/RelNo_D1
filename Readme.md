@@ -404,7 +404,7 @@ A 2D vector `[height][width]` of normalized floats ∈ **[0,1]**.
 
 ---
 
-## How PinkNoise Works (Simplified)
+## How PinkNoise Works
 
 Pink noise follows a 1/f energy distribution found in:
 
